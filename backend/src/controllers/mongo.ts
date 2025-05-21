@@ -1,15 +1,16 @@
 import "dotenv/config";
 import mongoose from "mongoose";
+import type { ConnectOptions as MongoConfig } from "mongoose";
 import { RequestBody } from "../types";
 
-const { MONGODB_URI, MONGODB_PARAMS } = process.env;
-
 class MongoClient {
-  private dbName: string;
+  private config: MongoConfig;
+  private uri: string;
   private requestBodyModel: mongoose.Model<RequestBody>;
 
-  constructor(dbName: string = "requestBodies") {
-    this.dbName = dbName;
+  constructor(host: string, port: number, config: MongoConfig) {
+    this.uri = `mongodb://${host}:${port}`;
+    this.config = config;
 
     const schema = new mongoose.Schema<RequestBody>({
       request: mongoose.Schema.Types.String,
@@ -44,9 +45,7 @@ class MongoClient {
   public async connectToDatabase(): Promise<void> {
     try {
       if (mongoose.connection.readyState !== 1) {
-        await mongoose.connect(
-          `${MONGODB_URI}/${this.dbName}?${MONGODB_PARAMS}`,
-        );
+        await mongoose.connect(this.uri, this.config);
         console.log("Connected to MongoDB");
       }
     } catch (error: any) {

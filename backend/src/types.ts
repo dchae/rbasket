@@ -51,3 +51,25 @@ export interface PGConfig {
   port?: number;
   database?: string;
 }
+
+export interface MongoSecret {
+  username: string;
+  password: string;
+  engine: string;
+  host: string;
+  port: number;
+  ssl: boolean;
+  dbClusterIdentifier: string;
+}
+
+// export interface MongoConfig {
+//   user?: string;
+//   pass?: string;
+//   dbName?: string;
+//   tls?: boolean;
+//   tlsCAFile?: string;
+//   replicaSet?: string;
+//   readPreference?: string;
+//   retryWrites?: boolean;
+//   authSource?: "admin";
+// }
