@@ -86,7 +86,7 @@ class PostgresClient {
     try {
       await this.pool.query(query, [basketName]);
     } catch (err) {
-      console.error("PostgreSQL: Error creating basket");
+      console.error("PostgreSQL: Error creating basket", err);
       throw new Error("PostgreSQL: Failed to create basket");
     }
   }
