@@ -11,7 +11,7 @@ import { getAWSSecret } from "./utils";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const { RDS_SECRET, MONGO_SECRET, REGION } = process.env;
+const { RDS_SECRET, MONGO_SECRET, REGION, PGDATABASE } = process.env;
 
 // Middleware to store raw data in the request
 app.use((req, _res, next) => {
@@ -44,6 +44,7 @@ const initApp = async () => {
     password: pgSecret?.password ?? process.env.PGPASSWORD, //default process.env.PGPASSWORD
     host: pgSecret?.host ?? process.env.PGHOST,
     port: pgSecret?.port ?? Number(process.env.PGPORT),
+    database: PGDATABASE ?? "requestbin",
   };
 
   console.log(pgConfig);
