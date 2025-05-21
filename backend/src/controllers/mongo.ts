@@ -2,7 +2,7 @@ import "dotenv/config";
 import mongoose from "mongoose";
 import { RequestBody } from "../types";
 
-const { MONGODB_ENDPOINT, MONGODB_PARAMS, CA_PATH } = process.env;
+const { MONGODB_URI, MONGODB_PARAMS } = process.env;
 
 class MongoClient {
   private dbName: string;
@@ -45,10 +45,7 @@ class MongoClient {
     try {
       if (mongoose.connection.readyState !== 1) {
         await mongoose.connect(
-          `${MONGODB_ENDPOINT}/${this.dbName}?${MONGODB_PARAMS}`,
-          {
-            tlsCAFile: CA_PATH,
-          },
+          `${MONGODB_URI}/${this.dbName}?${MONGODB_PARAMS}`,
         );
         console.log("Connected to MongoDB");
       }
