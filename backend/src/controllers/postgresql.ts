@@ -6,7 +6,7 @@ import type { PGConfig } from "../types";
 class PostgresClient {
   pool: Pool;
 
-  constructor(config: PGConfig) {
+  constructor(config?: PGConfig) {
     this.pool = new Pool(config);
     console.log("Connected to PostgreSQL server");
   }
