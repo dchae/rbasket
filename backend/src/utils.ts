@@ -71,7 +71,6 @@ export async function getAWSSecret(secret_name: string, region: string) {
   }
 
   const secretStr = response.SecretString;
-  console.log(secretStr);
 
   return JSON.parse(secretStr ?? "{}");
 }
