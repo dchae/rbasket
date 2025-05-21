@@ -2,6 +2,7 @@ import "dotenv/config";
 import { Client } from "pg";
 import * as fs from "node:fs";
 import path from "node:path";
+import { getAWSSecret } from "./utils";
 
 const DB_NAME: string = process.env.PGDATABASE || "requestbin";
 
@@ -71,6 +72,8 @@ const createDatabaseTables = async () => {
 
 const setupSchema = async () => {
   try {
+    const secret = await getAWSSecret("rds-psql", "ap-northeast-2");
+    console.log(secret);
     await initializeDB();
     await createDatabaseTables();
   } catch (error: unknown) {

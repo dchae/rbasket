@@ -52,8 +52,6 @@ export function normalizeRequest(request: PostgresRequestRow): Request {
   };
 }
 
-// const secret_name = "rds-psql";
-// region: "ap-northeast-2",
 export async function getAWSSecret(secret_name: string, region: string) {
   const client = new SecretsManagerClient({ region });
 
