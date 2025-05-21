@@ -37,12 +37,16 @@ const initApp = async () => {
     pgSecret = await getAWSSecret(RDS_SECRET, REGION);
   }
 
+  console.log(pgSecret);
+
   const pgConfig: PGConfig = {
     user: pgSecret?.username ?? process.env.PGUSER, // default process.env.USER
     password: pgSecret?.password ?? process.env.PGPASSWORD, //default process.env.PGPASSWORD
     host: pgSecret?.host ?? process.env.PGHOST,
     port: pgSecret?.port ?? Number(process.env.PGPORT),
   };
+
+  console.log(pgConfig);
 
   const pg = new PostgresClient(pgConfig);
 
