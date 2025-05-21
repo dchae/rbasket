@@ -34,3 +34,20 @@ export interface PostgresRequestRow {
   headers: string;
   body_mongo_id: string;
 }
+
+export interface RDSSecret {
+  username: string;
+  password: string;
+  engine: string;
+  host: string;
+  port: number;
+  dbInstanceIdentifier: string;
+}
+
+export interface PGConfig {
+  user?: string;
+  password?: string;
+  host?: string;
+  port?: number;
+  database?: string;
+}

@@ -1,12 +1,13 @@
 import { Pool, PoolClient, QueryResult } from "pg";
 import { Basket, Request } from "../types";
 import { normalizeRequest } from "../utils";
+import type { PGConfig } from "../types";
 
 class PostgresClient {
   pool: Pool;
 
-  constructor() {
-    this.pool = new Pool();
+  constructor(config: PGConfig) {
+    this.pool = new Pool(config);
     console.log("Connected to PostgreSQL server");
   }
 

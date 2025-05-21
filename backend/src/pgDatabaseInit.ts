@@ -3,8 +3,11 @@ import { Client } from "pg";
 import * as fs from "node:fs";
 import path from "node:path";
 import { getAWSSecret } from "./utils";
+import type { RDSSecret, PGConfig } from "./types";
 
 const DB_NAME: string = process.env.PGDATABASE || "requestbin";
+
+const { RDS_SECRET, REGION } = process.env;
 
 const isDatabaseCreated = async (client: Client): Promise<boolean> => {
   const query = "SELECT * FROM pg_database WHERE datname = $1";
@@ -19,14 +22,8 @@ const createDatabase = async (client: Client) => {
   console.log("Database created");
 };
 
-const initializeDB = async () => {
-  const client: Client = new Client({
-    user: process.env.PGUSER, // default process.env.USER
-    password: process.env.PGPASSWORD, //default process.env.PGPASSWORD
-    host: process.env.PGHOST,
-    port: Number(process.env.PGPORT),
-    database: "postgres", // connect to the default postgres db
-  });
+const initializeDB = async (config: PGConfig) => {
+  const client: Client = new Client(config);
 
   try {
     await client.connect();
@@ -44,14 +41,8 @@ const initializeDB = async () => {
   }
 };
 
-const createDatabaseTables = async () => {
-  const client: Client = new Client({
-    user: process.env.PGUSER, // default process.env.USER
-    password: process.env.PGPASSWORD, //default process.env.PGPASSWORD
-    host: process.env.PGHOST,
-    port: parseInt(process.env.PGPORT ?? "5432"),
-    database: DB_NAME,
-  });
+const createDatabaseTables = async (config: PGConfig) => {
+  const client: Client = new Client(config);
 
   console.log("Creating database tables");
   await client.connect();
@@ -72,10 +63,21 @@ const createDatabaseTables = async () => {
 
 const setupSchema = async () => {
   try {
-    const secret = await getAWSSecret("rds-psql", "ap-northeast-2");
-    console.log(secret);
-    await initializeDB();
-    await createDatabaseTables();
+    let secret: RDSSecret | undefined;
+    if (typeof RDS_SECRET === "string" && typeof REGION === "string") {
+      secret = await getAWSSecret(RDS_SECRET, REGION);
+    }
+
+    const config = {
+      user: secret?.username ?? process.env.PGUSER, // default process.env.USER
+      password: secret?.password ?? process.env.PGPASSWORD, //default process.env.PGPASSWORD
+      host: secret?.host ?? process.env.PGHOST,
+      port: secret?.port ?? Number(process.env.PGPORT),
+      database: "postgres", // connect to the default postgres db
+    };
+
+    await initializeDB(config);
+    await createDatabaseTables(config);
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.error(error.message);
