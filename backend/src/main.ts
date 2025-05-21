@@ -42,7 +42,6 @@ const initApp = async () => {
     password: pgSecret?.password ?? process.env.PGPASSWORD, //default process.env.PGPASSWORD
     host: pgSecret?.host ?? process.env.PGHOST,
     port: pgSecret?.port ?? Number(process.env.PGPORT),
-    database: "postgres", // connect to the default postgres db
   };
 
   const pg = new PostgresClient(pgConfig);
