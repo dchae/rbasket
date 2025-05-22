@@ -6,6 +6,7 @@ import {
   SecretsManagerClient,
   GetSecretValueCommand,
 } from "@aws-sdk/client-secrets-manager";
+import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
 
 export function generateRandomString() {
   return Math.random().toString(36).substring(2);
@@ -72,4 +73,14 @@ export async function getAWSSecret(secret_name: string, region: string) {
   const secretStr = response.SecretString;
 
   return JSON.parse(secretStr ?? "{}");
+}
+
+export async function getAWSParam(paramName: string, region?: string) {
+  const ssmClient = new SSMClient({ region });
+
+  const params = { Name: paramName, WithDecryption: true };
+
+  const cmd = new GetParameterCommand(params);
+  const data = await ssmClient.send(cmd);
+  return data.Parameter?.Value;
 }

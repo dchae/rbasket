@@ -7,7 +7,7 @@ import PostgresClient from "./controllers/postgresql";
 import MongoClient from "./controllers/mongo";
 import { RDSSecret, PGConfig, MongoSecret } from "./types";
 import type { ConnectOptions as MongoConfig } from "mongoose";
-import { getAWSSecret } from "./utils";
+import { getAWSSecret, getAWSParam } from "./utils";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -39,11 +39,18 @@ const initApp = async () => {
 
   console.log(pgSecret);
 
+  // arn:aws:ssm:ap-northeast-2:707336479585:parameter/rbasket-db-name
+  const dbNameParam = await getAWSParam("rbasket-db-name", REGION);
+  console.log(`retrieved param from AWS: ${dbNameParam}`);
+  const database: string =
+    process.env.PGDATABASE ?? dbNameParam ?? "requestbin";
+
   const pgConfig: PGConfig = {
     user: pgSecret?.username ?? process.env.PGUSER, // default process.env.USER
     password: pgSecret?.password ?? process.env.PGPASSWORD, //default process.env.PGPASSWORD
     host: pgSecret?.host ?? process.env.PGHOST,
     port: pgSecret?.port ?? Number(process.env.PGPORT),
+    database,
   };
 
   console.log(pgConfig);

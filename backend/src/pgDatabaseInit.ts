@@ -5,7 +5,7 @@ import path from "node:path";
 import { getAWSSecret } from "./utils";
 import type { RDSSecret, PGConfig } from "./types";
 
-const DB_NAME: string = process.env.PGDATABASE || "requestbin";
+const DB_NAME: string = process.env.PGDATABASE ?? "requestbin";
 
 const { RDS_SECRET, REGION } = process.env;
 
