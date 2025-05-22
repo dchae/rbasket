@@ -1,7 +1,7 @@
 import { IncomingHttpHeaders } from "http";
 import { QueryResult } from "pg";
 import PostgresController from "./controllers/postgresql";
-import { Request, PostgresRequestRow, PGConfig } from "./types";
+import { Request, PostgresRequestRow } from "./types";
 import {
   SecretsManagerClient,
   GetSecretValueCommand,
