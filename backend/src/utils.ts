@@ -1,7 +1,7 @@
 import { IncomingHttpHeaders } from "http";
 import { QueryResult } from "pg";
 import PostgresController from "./controllers/postgresql";
-import { Request, PostgresRequestRow } from "./types";
+import { Request, PostgresRequestRow, PGConfig } from "./types";
 import {
   SecretsManagerClient,
   GetSecretValueCommand,
@@ -11,10 +11,9 @@ export function generateRandomString() {
   return Math.random().toString(36).substring(2);
 }
 
-export async function generateToken(): Promise<string> {
+export async function generateToken(pg: PostgresController): Promise<string> {
   let token: string = "";
-  const pg = new PostgresController();
-  pg.connect();
+  pg.pool.connect();
   let result: QueryResult;
 
   try {

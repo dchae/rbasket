@@ -33,7 +33,7 @@ export default function basketRouter(pg: PostgresClient, mongo: MongoClient) {
       return;
     }
 
-    let token: string = await generateToken();
+    let token: string = await generateToken(pg);
     await pg.storeToken(token, basketName);
     res.status(200).json({ token });
   });
@@ -67,7 +67,7 @@ export default function basketRouter(pg: PostgresClient, mongo: MongoClient) {
         (await pg.deleteBasket(basketName));
 
       if (successfulDelete) res.status(204).json();
-    }
+    },
   );
 
   router.get(
@@ -99,9 +99,9 @@ export default function basketRouter(pg: PostgresClient, mongo: MongoClient) {
       });
 
       Promise.all(mappedResult).then((requests) =>
-        res.status(200).json({ requests })
+        res.status(200).json({ requests }),
       );
-    }
+    },
   );
 
   router.delete(
@@ -121,7 +121,7 @@ export default function basketRouter(pg: PostgresClient, mongo: MongoClient) {
         (await pg.deleteBasketRequests(basketName));
 
       if (successfulDelete) res.status(204).send("Basket has been cleared");
-    }
+    },
   );
 
   router.get("/baskets/validate", async (req: Request, res: Response) => {
