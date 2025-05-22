@@ -6,6 +6,10 @@ import MongoClient from "../controllers/mongo";
 export default function basketRouter(pg: PostgresClient, mongo: MongoClient) {
   const router = express.Router();
 
+  router.get("/health", async (_req: Request, res: Response) => {
+    res.status(200).send();
+  });
+
   router.get("/baskets", async (_req: Request, res: Response) => {
     const response = await pg.getBaskets();
     const basketNames = response.map(({ name }) => name);
