@@ -37,11 +37,8 @@ const initApp = async () => {
     pgSecret = await getAWSSecret(RDS_SECRET, REGION);
   }
 
-  console.log(pgSecret);
-
   // arn:aws:ssm:ap-northeast-2:707336479585:parameter/rbasket-db-name
   const dbNameParam = await getAWSParam("rbasket-db-name", REGION);
-  console.log(`retrieved param from AWS: ${dbNameParam}`);
   const database: string =
     process.env.PGDATABASE ?? dbNameParam ?? "requestbin";
 
@@ -52,8 +49,6 @@ const initApp = async () => {
     port: pgSecret?.port ?? Number(process.env.PGPORT),
     database,
   };
-
-  console.log(pgConfig);
 
   const pg = new PostgresClient(pgConfig);
 

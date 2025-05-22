@@ -7,7 +7,6 @@ class PostgresClient {
   pool: Pool;
 
   constructor(config?: PGConfig) {
-    console.log("Config from PostgresClient constructor: ", config);
     this.pool = new Pool(config);
     console.log("Connected to PostgreSQL server");
   }
