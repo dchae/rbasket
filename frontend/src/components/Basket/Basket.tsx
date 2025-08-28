@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 import { useParams, useNavigate } from "react-router";
 import { useNotifications } from "../../hooks/useNotifications";
 import type { Request as RequestType } from "../../types";
@@ -105,8 +106,12 @@ const Basket = ({ originURL }: BasketProps) => {
         );
         setRequests(reverse ? requests.toReversed() : requests);
       } catch (error: unknown) {
-        handleAPIError(error);
+        if (axios.isCancel(error)) {
+          // requests are canceled on cleanup
+          return;
+        }
         setNotFound(true);
+        handleAPIError(error);
       }
     };
 
