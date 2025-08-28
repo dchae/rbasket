@@ -97,7 +97,7 @@ npm run nginx
 
 ### API
 
-- [API Documentation](https://github.com/dom-and-the-night-owls/rbasket/wiki/API-Documentation)
+- [API Documentation](https://github.com/dchae/rbasket/wiki/API)
 
 ### Dependencies
 

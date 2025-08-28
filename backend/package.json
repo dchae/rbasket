@@ -15,15 +15,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dom-and-the-night-owls/rbasket.git"
+    "url": "git+https://github.com/dchae/rbasket.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/dom-and-the-night-owls/rbasket/issues"
+    "url": "https://github.com/dchae/rbasket/issues"
   },
-  "homepage": "https://github.com/dom-and-the-night-owls/rbasket#readme",
+  "homepage": "https://github.com/dchae/rbasket#readme",
   "dependencies": {
     "@types/express": "^5.0.1",
     "dotenv": "^16.5.0",
